@@ -26,6 +26,49 @@ void Izpis_Stevil(int* polje, unsigned int velikost) {
 		output << polje[i] << ' ';
 }
 
+void CountingSort(vector<int>& A) {
+	if (A.empty()) return;
+
+	int max = *max_element(A.begin(), A.end());
+	int min = *min_element(A.begin(), A.end());
+	int range = max - min + 1;
+
+	// Converts the numbers so that there are no negatives
+	for (int& num : A) {
+		num -= min;
+	}
+
+	vector<int> C(range, 0);
+
+	for (int num : A) {
+		C[num]++;
+	}
+
+	for (int i = 1; i < C.size(); i++) {
+		C[i] += C[i - 1];
+	}
+
+	vector<int> B(A.size());
+
+	for (int i = A.size() - 1; i >= 0; i--) {
+		B[C[A[i]] - 1] = A[i];
+		C[A[i]]--;
+	}
+
+	// Converts the numbers back to their original form
+	for (int i = 0; i < A.size(); i++) {
+		A[i] = B[i];
+	}
+
+	for (int& num : A) {
+		num += min;
+	}
+
+	Izpis_Stevil(&A[0], A.size());
+
+	cout << "Counting sort done." << endl;
+}
+
 int main(int argc, const char* argv[]) {
 	vector<int> A;
 
@@ -33,7 +76,7 @@ int main(int argc, const char* argv[]) {
 	if (!Branje_Stevil(A, argv[2])) return 0;
 
 	if (argv[1][0] == '0') {
-		//counting sort
+		CountingSort(A);
 	}
 	else {
 		//Roman sort
