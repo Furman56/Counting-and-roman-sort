@@ -76,6 +76,11 @@ void RomanSort(vector<int>& A) {
 	int min = *min_element(A.begin(), A.end());
 	int range = max - min + 1;
 
+	// Converts the numbers so that there are no negatives
+	for (int& num : A) {
+		num -= min;
+	}
+
 	vector<int> C(range, 0);
 
 	for (int num : A) {
@@ -90,6 +95,15 @@ void RomanSort(vector<int>& A) {
 			B[index++] = i;
 			C[i]--;
 		}
+	}
+
+	// Converts the numbers back to their original form
+	for (int i = 0; i < A.size(); i++) {
+		A[i] = B[i];
+	}
+
+	for (int& num : A) {
+		num += min;
 	}
 
 	Izpis_Stevil(&B[0], B.size());
@@ -107,7 +121,7 @@ int main(int argc, const char* argv[]) {
 		CountingSort(A);
 	}
 	else {
-		//Roman sort
+		RomanSort(A);
 	}
 	Izpis_Stevil(&A[0],A.size());
 
