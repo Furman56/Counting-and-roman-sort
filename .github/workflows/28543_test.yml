@@ -18,7 +18,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload napaka.txt as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-check-errors
           path: napaka.txt
