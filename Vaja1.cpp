@@ -1,6 +1,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 using namespace std;
 
 bool Branje_Stevil(vector<int> &vec, const char s[]) {
