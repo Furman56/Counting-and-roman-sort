@@ -1,0 +1,56 @@
+name: 28543 Testing Workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  check-tests:
+    name: Check if test file exists
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check for test script and redirect stderr
+        run: |
+          ls test.cpp 2> napaka.txt
+        continue-on-error: true
+
+      - name: Upload napaka.txt as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-check-errors
+          path: napaka.txt
+
+  run-tests:
+    name: Compile and Run Tests
+    runs-on: ubuntu-latest
+    needs: check-tests
+
+    strategy:
+      matrix:
+        compiler: [g++, clang++]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download napaka.txt
+        uses: actions/download-artifact@v3
+        with:
+          name: test-check-errors
+
+      - name: Stop if no test file
+        run: |
+          if [ -s napaka.txt ]; then
+            echo "No test.cpp file found!"
+            cat napaka.txt
+            exit 1
+          fi
+
+      - name: Compile test file with ${{ matrix.compiler }}
+        run: ${{ matrix.compiler }} -o test_exec test.cpp Vaja1.cpp
+
+      - name: Run tests
+        run: ./test_exec
