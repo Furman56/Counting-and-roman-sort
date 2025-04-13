@@ -113,7 +113,7 @@ void RomanSort(vector<int>& A) {
 	cout << "Roman sort done." << endl;
 }
 
-int main(int argc, const char* argv[]) {
+/*int main(int argc, const char* argv[]) {
 	vector<int> A;
 
 	if (argc < 3) return 0;
@@ -128,4 +128,4 @@ int main(int argc, const char* argv[]) {
 	Izpis_Stevil(&A[0],A.size());
 
 	return 0;
-}
+}*/
